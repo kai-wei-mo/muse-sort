@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap');
+
+.playlist-meta {
+	color: #ffffff;
+	background: linear-gradient(#7c83b6, #444864);
+
+	height: 42%;
+	width: 100%;
+
+	display: flex;
+	align-items: flex-end;
+
+	padding: 65px 32px 25px 30px;
+}
+
+.playlist-cover-img {
+	width: 192px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	float: left;
+}
+
+.all-playlist-text {
+	margin-left: 24px;
+	font-weight: 600;
+}
+
+.text-playlist {
+	font-size: 0.8em;
+	line-height: 90%;
+}
+
+.text-sorting-algorithms {
+	font-size: 3.5em;
+	font-weight: 800;
+}
+
+.text-all-the-best,
+.stats {
+	font-size: 0.85em;
+	color: #c2c2cc;
+	margin-top: 2px;
+}
+
+.stats {
+	margin-top: 6px;
+}
+
+.stats a {
+	color: white;
+	text-decoration: none;
+}
+
+.stats span:before {
+	content: '   •   ';
+}

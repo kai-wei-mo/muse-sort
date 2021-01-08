@@ -1,0 +1,32 @@
+.sidenav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 230px;
+	height: 100vh;
+
+	background-color: black;
+	padding: 20px;
+}
+
+.logo-img {
+	width: 70%;
+	margin-bottom: 36px;
+}
+
+.arrow-text {
+	color: #aeaeae;
+
+	font-size: 1.4em;
+	padding: 0 5px;
+	text-align: center;
+}
+
+.arrow-img {
+	max-width: 160px;
+	position: relative;
+	top: 30px;
+
+	display: block;
+	margin: 0 auto;
+}
