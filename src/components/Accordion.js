@@ -3,6 +3,8 @@ import Chevron from './Chevron';
 
 import './Accordion.css';
 
+import Visualizer from './Visualizer.js';
+
 function Accordion(props) {
 	const [setActive, setActiveState] = useState('');
 	const [setHeight, setHeightState] = useState('0px');
@@ -23,7 +25,7 @@ function Accordion(props) {
 	return (
 		<div className='accordion__section'>
 			<button className={`accordion ${setActive}`} onClick={toggleAccordion}>
-				<span className='ranking'>1</span>
+				<span className='ranking'>{props.ranking}</span>
 				<img className='song-image' src={props.image} alt='filler'></img>
 				<div className='song-and-artist'>
 					<p className='song-name'>{props.title}</p>
@@ -55,6 +57,7 @@ function Accordion(props) {
 					className='accordion__text'
 					dangerouslySetInnerHTML={{ __html: props.content }}
 				/>
+				<Visualizer />
 			</div>
 		</div>
 	);

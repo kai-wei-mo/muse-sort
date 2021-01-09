@@ -1,0 +1,34 @@
+.visualizer {
+	position: relative;
+	width: 520px;
+	height: 300px; /* max possible bar height */
+	display: inline-block;
+}
+
+.visualizer-bar {
+	width: 24px;
+	display: inline-block;
+	margin: 0 1px;
+}
+
+.button-group {
+	position: relative;
+	float: right;
+}
+
+.button-group button {
+	background-color: #118ab2;
+	color: white;
+	padding: 10px 24px;
+	cursor: pointer;
+	width: 100%;
+	display: block;
+}
+
+.button-group button:not(:last-child) {
+	border-bottom: none; /* Prevent double borders */
+}
+
+.button-group button:hover {
+	background-color: #073b4c;
+}

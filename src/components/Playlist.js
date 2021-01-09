@@ -4,7 +4,7 @@ import './Playlist.css';
 import Accordion from './Accordion.js';
 import './Accordion.css';
 
-import testIMG from '../assets/square-placeholder.png';
+import algoDescriptions from '../algorithms/AlgoDescriptions.js';
 
 class Playlist extends React.Component {
 	constructor(props) {
@@ -16,17 +16,26 @@ class Playlist extends React.Component {
 
 	render() {
 		return (
-			<div className='playlist'>
-				<Accordion
-					image={testIMG}
-					title='Merge Sort'
-					artist='John von Neumann'
-					album='Divide and Conquer'
-					best='O(n log(n))'
-					average='O(n log(n))'
-					worst='O(n log(n))'
-					content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-				/>
+			<div className='playlist-wrapper'>
+				<div className='bg-grad'></div>
+				<div className='playlist'>
+					{algoDescriptions.map((d) => {
+						return (
+							<Accordion
+								key={d.ranking}
+								ranking={d.ranking}
+								image={d.image}
+								title={d.title}
+								artist={d.artist}
+								album={d.album}
+								best={d.best}
+								average={d.average}
+								worst={d.worst}
+								content={d.content}
+							/>
+						);
+					})}
+				</div>
 			</div>
 		);
 	}

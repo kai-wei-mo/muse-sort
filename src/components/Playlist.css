@@ -1,7 +1,18 @@
-.playlist {
-	background: linear-gradient(#363a50, #121212);
+.playlist-wrapper {
+	position: relative;
 	width: 100%;
+	height: auto;
+}
+
+.bg-grad {
+	background: linear-gradient(#363a50, #121212);
 	height: 300px;
+}
+
+.playlist {
+	position: absolute;
+	top: 0;
+	left: 0;
 
 	padding: 2em;
 }
