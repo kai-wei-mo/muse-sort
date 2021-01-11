@@ -1,23 +1,26 @@
 import React from 'react';
 import './Visualizer.css';
 
+import * as Tone from 'tone';
+
 import { getMergeSortAnimations } from '../algorithms/MergeSort.js';
+import { getBubbleAnimations } from '../algorithms/BubbleSort.js';
+import musicMap from '../music/ChromaticMap.js';
 
 const NUM_OF_BARS = 270;
-
-const WIDTH = 1; //px
+const WIDTH = 1;
+const SPEED = 4;
 // total width of container is
 // (WIDTH + 1) * NUMOFBARS - 1
 // width should be odd for impeccable rendering
-// num=20, width=24, speed 20
+// (24 + 1) * 20 ( - 1)
 // (1 + 1) * 270 ( - 1)
 // (2 + 1) * 180 ( - 1)
+
 const MIN_BAR_HEIGHT = 1;
-const MAX_BAR_HEIGHT = 24;
+const MAX_BAR_HEIGHT = 24; // two octaves = 25 tones
 const PIXEL_CONVERSION_FACTOR = 12.5;
-const COLORS = ['#68A691', '#F9F9F9'];
-const SPEED = 4;
-// https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212
+const COLORS = ['#68A691', '#F9F9F9']; // https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212
 
 class Visualizer extends React.Component {
 	constructor(props) {
@@ -57,7 +60,17 @@ class Visualizer extends React.Component {
 		this.setState({ array });
 	}
 
+	heightToTone(h) {
+		h = h.slice(0, -2); // remove "px"
+		h /= PIXEL_CONVERSION_FACTOR;
+
+		return musicMap[h];
+	}
+
 	mergeSort() {
+		//create a synth and connect it to the main output (your speakers)
+		const synth = new Tone.Synth().toDestination();
+
 		const animations = getMergeSortAnimations(this.state.array);
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName(this.props.algo);
@@ -70,12 +83,54 @@ class Visualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.backgroundColor = color;
 					barTwoStyle.backgroundColor = color;
+
+					synth.triggerAttackRelease(
+						this.heightToTone(barTwoStyle.height),
+						'8n'
+					);
 				}, i * SPEED);
 			} else {
 				setTimeout(() => {
 					const [barOneIdx, newHeight] = animations[i];
 					const barOneStyle = arrayBars[barOneIdx].style;
 					barOneStyle.height = `${newHeight}px`;
+				}, i * SPEED);
+			}
+		}
+	}
+
+	bubbleSort() {
+		//create a synth and connect it to the main output (your speakers)
+		const synth = new Tone.Synth().toDestination();
+
+		const animations = getBubbleAnimations(this.state.array);
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName(this.props.algo);
+			const [operation, index1, index2] = animations[i];
+
+			const barOneStyle = arrayBars[index1].style;
+			const barTwoStyle = arrayBars[index2].style;
+
+			if (operation === 'v') {
+				setTimeout(() => {
+					barOneStyle.backgroundColor = COLORS[1];
+					barTwoStyle.backgroundColor = COLORS[1];
+
+					synth.triggerAttackRelease(
+						this.heightToTone(barTwoStyle.height),
+						'8n'
+					);
+				}, i * SPEED);
+
+				setTimeout(() => {
+					barOneStyle.backgroundColor = COLORS[0];
+					barTwoStyle.backgroundColor = COLORS[0];
+				}, (i + 1) * SPEED);
+			} else {
+				setTimeout(() => {
+					let temp = barOneStyle.height;
+					barOneStyle.height = barTwoStyle.height;
+					barTwoStyle.height = temp;
 				}, i * SPEED);
 			}
 		}
@@ -106,6 +161,7 @@ class Visualizer extends React.Component {
 					<button onClick={() => this.resetArray()}>Generate New Array</button>
 					<button onClick={() => this.mergeSort()}>Merge Sort</button>
 					<button onClick={() => this.resetArray()}>dummy text</button>
+					<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
 				</div>
 			</>
 		);
