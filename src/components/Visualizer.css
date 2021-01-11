@@ -1,14 +1,10 @@
 .visualizer {
 	position: relative;
-	width: 520px;
+	width: 540px;
 	height: 300px; /* max possible bar height */
 	display: inline-block;
-}
 
-.visualizer-bar {
-	width: 24px;
-	display: inline-block;
-	margin: 0 1px;
+	left: 50px;
 }
 
 .button-group {

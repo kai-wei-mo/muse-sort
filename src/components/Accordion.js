@@ -57,7 +57,7 @@ function Accordion(props) {
 					className='accordion__text'
 					dangerouslySetInnerHTML={{ __html: props.content }}
 				/>
-				<Visualizer />
+				<Visualizer algo={props.title.split()[0]} />
 			</div>
 		</div>
 	);
