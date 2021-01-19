@@ -1,4 +1,4 @@
-export function getBubbleAnimations(array) {
+export function getBubbleSortAnimations(array) {
 	const animations = [];
 	if (array.length <= 1) return array;
 	const auxiliaryArray = array.slice();
@@ -11,7 +11,6 @@ let bubbleSort = (aux, anime) => {
 
 	for (let i = 0; i < n - 1; i++) {
 		for (let j = 0; j < n - i - 1; j++) {
-			anime.push(['v', j, j + 1]);
 			anime.push(['v', j, j + 1]);
 
 			if (aux[j] > aux[j + 1]) {
