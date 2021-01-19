@@ -60,19 +60,12 @@
 	overflow: hidden;
 
 	border-radius: 0 0 5px 5px;
+
+	padding: 0 50px;
 }
 
 .accordion__content::-webkit-scrollbar {
 	display: none;
-}
-
-.accordion__text {
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 400;
-	font-size: 14px;
-	padding: 18px;
-
-	color: #f9f9f9;
 }
 
 .ranking {

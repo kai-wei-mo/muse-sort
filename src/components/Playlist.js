@@ -26,12 +26,14 @@ class Playlist extends React.Component {
 								ranking={d.ranking}
 								image={d.image}
 								title={d.title}
+								alias={d.alias}
 								artist={d.artist}
 								album={d.album}
 								best={d.best}
 								average={d.average}
 								worst={d.worst}
 								content={d.content}
+								code={d.code}
 							/>
 						);
 					})}

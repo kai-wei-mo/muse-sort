@@ -53,11 +53,7 @@ function Accordion(props) {
 				style={{ maxHeight: `${setHeight}` }}
 				className='accordion__content'
 			>
-				<div
-					className='accordion__text'
-					dangerouslySetInnerHTML={{ __html: props.content }}
-				/>
-				<Visualizer algo={props.title.split()[0]} />
+				<Visualizer alias={props.alias} code={props.code} />
 			</div>
 		</div>
 	);

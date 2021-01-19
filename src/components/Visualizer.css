@@ -1,20 +1,40 @@
 .visualizer {
 	position: relative;
-	width: 540px;
+	width: 360px;
 	height: 300px; /* max possible bar height */
 	display: inline-block;
 
-	left: 50px;
+	overflow: hidden;
+}
+
+.right {
+	float: right;
+}
+
+.code {
+	position: relative;
+	width: 390px;
+	max-width: 390px;
+	display: inline-block;
+
+	background: rgba(156, 160, 202, 0.3);
+}
+
+.code pre {
+	font-family: 'Courier New', monospace;
+	font-size: 14px;
+	margin: 10px 10px;
+	color: white;
 }
 
 .button-group {
 	position: relative;
-	float: right;
+	float: bottom;
 }
 
 .button-group button {
 	background-color: #118ab2;
-	color: white;
+	color: #f2f3ec;
 	padding: 10px 24px;
 	cursor: pointer;
 	width: 100%;

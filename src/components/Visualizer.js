@@ -3,24 +3,25 @@ import './Visualizer.css';
 
 import * as Tone from 'tone';
 
+import { getBubbleSortAnimations } from '../algorithms/BubbleSort.js';
+import { getHeapSortAnimations } from '../algorithms/HeapSort.js';
 import { getMergeSortAnimations } from '../algorithms/MergeSort.js';
-import { getBubbleAnimations } from '../algorithms/BubbleSort.js';
+import { getQuickSortAnimations } from '../algorithms/QuickSort.js';
+
 import musicMap from '../music/ChromaticMap.js';
 
-const NUM_OF_BARS = 270;
+const NUM_OF_BARS = 180;
 const WIDTH = 1;
-const SPEED = 4;
+// const SPEED = 4;
+let SPEED = 10;
 // total width of container is
 // (WIDTH + 1) * NUMOFBARS - 1
 // width should be odd for impeccable rendering
-// (24 + 1) * 20 ( - 1)
-// (1 + 1) * 270 ( - 1)
-// (2 + 1) * 180 ( - 1)
 
 const MIN_BAR_HEIGHT = 1;
 const MAX_BAR_HEIGHT = 24; // two octaves = 25 tones
 const PIXEL_CONVERSION_FACTOR = 12.5;
-const COLORS = ['#68A691', '#F9F9F9']; // https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212
+const COLORS = ['#a2d2ff', 'red']; // https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212
 
 class Visualizer extends React.Component {
 	constructor(props) {
@@ -67,13 +68,50 @@ class Visualizer extends React.Component {
 		return musicMap[h];
 	}
 
+	genericSort(sortFunction) {
+		const synth = new Tone.Synth().toDestination();
+
+		const animations = sortFunction(this.state.array);
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName(this.props.alias);
+			const [operation, index1, index2] = animations[i];
+
+			const barOneStyle = arrayBars[index1].style;
+			const barTwoStyle = arrayBars[index2].style;
+
+			if (operation === 'v') {
+				setTimeout(() => {
+					barOneStyle.backgroundColor = COLORS[1];
+					barTwoStyle.backgroundColor = COLORS[1];
+
+					synth.triggerAttackRelease(
+						this.heightToTone(barTwoStyle.height),
+						'8n'
+					);
+				}, i * SPEED);
+
+				setTimeout(() => {
+					barOneStyle.backgroundColor = COLORS[0];
+					barTwoStyle.backgroundColor = COLORS[0];
+				}, (i + 1) * SPEED);
+			} else {
+				setTimeout(() => {
+					let { array } = this.state;
+					let temp = array[index1];
+					array[index1] = array[index2];
+					array[index2] = temp;
+					this.setState({ array });
+				}, i * SPEED);
+			}
+		}
+	}
+
 	mergeSort() {
-		//create a synth and connect it to the main output (your speakers)
 		const synth = new Tone.Synth().toDestination();
 
 		const animations = getMergeSortAnimations(this.state.array);
 		for (let i = 0; i < animations.length; i++) {
-			const arrayBars = document.getElementsByClassName(this.props.algo);
+			const arrayBars = document.getElementsByClassName(this.props.alias);
 			const isColorChange = i % 3 !== 2;
 			if (isColorChange) {
 				const [barOneIdx, barTwoIdx] = animations[i];
@@ -100,51 +138,39 @@ class Visualizer extends React.Component {
 	}
 
 	bubbleSort() {
-		//create a synth and connect it to the main output (your speakers)
-		const synth = new Tone.Synth().toDestination();
+		this.genericSort(getBubbleSortAnimations);
+	}
 
-		const animations = getBubbleAnimations(this.state.array);
-		for (let i = 0; i < animations.length; i++) {
-			const arrayBars = document.getElementsByClassName(this.props.algo);
-			const [operation, index1, index2] = animations[i];
+	heapSort() {
+		this.genericSort(getHeapSortAnimations);
+	}
 
-			const barOneStyle = arrayBars[index1].style;
-			const barTwoStyle = arrayBars[index2].style;
-
-			if (operation === 'v') {
-				setTimeout(() => {
-					barOneStyle.backgroundColor = COLORS[1];
-					barTwoStyle.backgroundColor = COLORS[1];
-
-					synth.triggerAttackRelease(
-						this.heightToTone(barTwoStyle.height),
-						'8n'
-					);
-				}, i * SPEED);
-
-				setTimeout(() => {
-					barOneStyle.backgroundColor = COLORS[0];
-					barTwoStyle.backgroundColor = COLORS[0];
-				}, (i + 1) * SPEED);
-			} else {
-				setTimeout(() => {
-					let temp = barOneStyle.height;
-					barOneStyle.height = barTwoStyle.height;
-					barTwoStyle.height = temp;
-				}, i * SPEED);
-			}
-		}
+	quickSort() {
+		this.genericSort(getQuickSortAnimations);
 	}
 
 	render() {
 		const { array } = this.state;
+		const aliasToFunction = {};
+		aliasToFunction['merge'] = () => {
+			this.mergeSort();
+		};
+		aliasToFunction['bubble'] = () => {
+			this.bubbleSort();
+		};
+		aliasToFunction['heap'] = () => {
+			this.heapSort();
+		};
+		aliasToFunction['quick'] = () => {
+			this.quickSort();
+		};
 
 		return (
 			<>
 				<div className='visualizer'>
 					{array.map((val, i) => (
 						<div
-							className={`visualizer-bar ${this.props.algo}`}
+							className={`visualizer-bar ${this.props.alias}`}
 							key={i}
 							style={{
 								backgroundColor: COLORS[0],
@@ -157,11 +183,22 @@ class Visualizer extends React.Component {
 						></div>
 					))}
 				</div>
-				<div className='button-group'>
-					<button onClick={() => this.resetArray()}>Generate New Array</button>
-					<button onClick={() => this.mergeSort()}>Merge Sort</button>
-					<button onClick={() => this.resetArray()}>dummy text</button>
-					<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+
+				<div className='right'>
+					<div className='code'>
+						{this.props.code.map((val, i) => (
+							<pre>{val}</pre>
+						))}
+					</div>
+
+					<div className='button-group'>
+						<button onClick={() => this.resetArray()}>
+							Generate New Array
+						</button>
+						<button onClick={() => aliasToFunction[this.props.alias]()}>
+							SORT
+						</button>
+					</div>
 				</div>
 			</>
 		);
