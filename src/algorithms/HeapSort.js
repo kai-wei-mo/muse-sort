@@ -45,7 +45,5 @@ export function getHeapSortAnimations(array) {
 	arrLength = array.length;
 	heapSort(array.slice());
 
-	let temp = animations.slice();
-	animations = [];
-	return temp;
+	return animations;
 }
