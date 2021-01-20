@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import Chevron from './Chevron';
-
 import './Accordion.css';
 
+import { TIME_COLORS } from './ColorConstants.js';
+
 import Visualizer from './Visualizer.js';
+import Chevron from './Chevron';
 
 function Accordion(props) {
 	const [setActive, setActiveState] = useState('');
@@ -42,11 +43,26 @@ function Accordion(props) {
 					</a>
 				</div>
 				<span className='album-name'>{props.album}</span>
-				<span className='best case'>{props.best}</span>
-				<span className='average case'>{props.average}</span>
-				<span className='worst case'>{props.worst}</span>
+				<span
+					className='best case'
+					style={{ backgroundColor: TIME_COLORS[props.best] }}
+				>
+					{props.best}
+				</span>
+				<span
+					className='average case'
+					style={{ backgroundColor: TIME_COLORS[props.average] }}
+				>
+					{props.average}
+				</span>
+				<span
+					className='worst case'
+					style={{ backgroundColor: TIME_COLORS[props.worst] }}
+				>
+					{props.worst}
+				</span>
 
-				<Chevron className={`${setRotate}`} width={10} fill={'#777'} />
+				<Chevron className={`${setRotate} chevron`} width={10} fill={'#777'} />
 			</button>
 			<div
 				ref={content}

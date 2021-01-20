@@ -4,6 +4,8 @@ import './Playlist.css';
 import Accordion from './Accordion.js';
 import './Accordion.css';
 
+import Header from './Header.js';
+
 import algoDescriptions from '../algorithms/AlgoDescriptions.js';
 
 class Playlist extends React.Component {
@@ -19,6 +21,7 @@ class Playlist extends React.Component {
 			<div className='playlist-wrapper'>
 				<div className='bg-grad'></div>
 				<div className='playlist'>
+					<Header />
 					{algoDescriptions.map((d) => {
 						return (
 							<Accordion

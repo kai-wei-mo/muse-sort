@@ -5,14 +5,16 @@ import * as Tone from 'tone';
 
 import { getBubbleSortAnimations } from '../algorithms/BubbleSort.js';
 import { getHeapSortAnimations } from '../algorithms/HeapSort.js';
+import { getInsertionSortAnimations } from '../algorithms/InsertionSort.js';
 import { getMergeSortAnimations } from '../algorithms/MergeSort.js';
 import { getQuickSortAnimations } from '../algorithms/QuickSort.js';
+import { getSelectionSortAnimations } from '../algorithms/SelectionSort.js';
 
 import musicMap from '../music/ChromaticMap.js';
+import { BAR_COLORS } from './ColorConstants';
 
 const NUM_OF_BARS = 180;
 const WIDTH = 1;
-// const SPEED = 4;
 let SPEED = 10;
 // total width of container is
 // (WIDTH + 1) * NUMOFBARS - 1
@@ -21,7 +23,6 @@ let SPEED = 10;
 const MIN_BAR_HEIGHT = 1;
 const MAX_BAR_HEIGHT = 24; // two octaves = 25 tones
 const PIXEL_CONVERSION_FACTOR = 12.5;
-const COLORS = ['#a2d2ff', 'red']; // https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212
 
 class Visualizer extends React.Component {
 	constructor(props) {
@@ -81,19 +82,26 @@ class Visualizer extends React.Component {
 
 			if (operation === 'v') {
 				setTimeout(() => {
-					barOneStyle.backgroundColor = COLORS[1];
-					barTwoStyle.backgroundColor = COLORS[1];
+					barOneStyle.backgroundColor = BAR_COLORS[1];
+					barTwoStyle.backgroundColor = BAR_COLORS[1];
 
-					synth.triggerAttackRelease(
-						this.heightToTone(barTwoStyle.height),
-						'8n'
-					);
+					try {
+						synth.triggerAttackRelease(
+							this.heightToTone(barTwoStyle.height),
+							'8n'
+						);
+					} catch (e) {}
 				}, i * SPEED);
 
 				setTimeout(() => {
-					barOneStyle.backgroundColor = COLORS[0];
-					barTwoStyle.backgroundColor = COLORS[0];
+					barOneStyle.backgroundColor = BAR_COLORS[0];
+					barTwoStyle.backgroundColor = BAR_COLORS[0];
 				}, (i + 1) * SPEED);
+			} else if (operation === 'p') {
+				setTimeout(() => {
+					barOneStyle.backgroundColor = BAR_COLORS[2];
+					barTwoStyle.backgroundColor = BAR_COLORS[2];
+				}, i * SPEED);
 			} else {
 				setTimeout(() => {
 					let { array } = this.state;
@@ -117,7 +125,7 @@ class Visualizer extends React.Component {
 				const [barOneIdx, barTwoIdx] = animations[i];
 				const barOneStyle = arrayBars[barOneIdx].style;
 				const barTwoStyle = arrayBars[barTwoIdx].style;
-				const color = i % 3 === 0 ? COLORS[1] : COLORS[0];
+				const color = i % 3 === 0 ? BAR_COLORS[1] : BAR_COLORS[0];
 				setTimeout(() => {
 					barOneStyle.backgroundColor = color;
 					barTwoStyle.backgroundColor = color;
@@ -145,24 +153,39 @@ class Visualizer extends React.Component {
 		this.genericSort(getHeapSortAnimations);
 	}
 
+	insertionSort() {
+		this.genericSort(getInsertionSortAnimations);
+	}
+
 	quickSort() {
 		this.genericSort(getQuickSortAnimations);
 	}
 
+	selectionSort() {
+		this.genericSort(getSelectionSortAnimations);
+	}
+
 	render() {
 		const { array } = this.state;
-		const aliasToFunction = {};
-		aliasToFunction['merge'] = () => {
-			this.mergeSort();
-		};
-		aliasToFunction['bubble'] = () => {
-			this.bubbleSort();
-		};
-		aliasToFunction['heap'] = () => {
-			this.heapSort();
-		};
-		aliasToFunction['quick'] = () => {
-			this.quickSort();
+		const aliasToFunction = {
+			bubble: () => {
+				this.bubbleSort();
+			},
+			heap: () => {
+				this.heapSort();
+			},
+			insertion: () => {
+				this.insertionSort();
+			},
+			merge: () => {
+				this.mergeSort();
+			},
+			quick: () => {
+				this.quickSort();
+			},
+			selection: () => {
+				this.selectionSort();
+			},
 		};
 
 		return (
@@ -173,7 +196,7 @@ class Visualizer extends React.Component {
 							className={`visualizer-bar ${this.props.alias}`}
 							key={i}
 							style={{
-								backgroundColor: COLORS[0],
+								backgroundColor: BAR_COLORS[0],
 								height: `${val}px`,
 								position: 'absolute',
 								left: `${(WIDTH + 1) * i}px`,
@@ -192,9 +215,7 @@ class Visualizer extends React.Component {
 					</div>
 
 					<div className='button-group'>
-						<button onClick={() => this.resetArray()}>
-							Generate New Array
-						</button>
+						<button onClick={() => this.resetArray()}>NEW ARRAY</button>
 						<button onClick={() => aliasToFunction[this.props.alias]()}>
 							SORT
 						</button>

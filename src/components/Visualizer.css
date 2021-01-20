@@ -1,14 +1,19 @@
 .visualizer {
 	position: relative;
 	width: 360px;
-	height: 300px; /* max possible bar height */
+	height: 300px; /* max possible bar height is 300*/
 	display: inline-block;
-
+	margin-top: 20px;
+	margin-bottom: 20px;
 	overflow: hidden;
 }
 
 .right {
 	float: right;
+	position: relative;
+	height: calc(300px - 20px - 20px);
+
+	margin-top: 40px;
 }
 
 .code {
@@ -18,6 +23,8 @@
 	display: inline-block;
 
 	background: rgba(156, 160, 202, 0.3);
+
+	border-radius: 3px;
 }
 
 .code pre {
@@ -28,23 +35,27 @@
 }
 
 .button-group {
-	position: relative;
-	float: bottom;
+	position: absolute;
+	bottom: 0;
 }
 
 .button-group button {
-	background-color: #118ab2;
+	background: #7c83b6;
 	color: #f2f3ec;
 	padding: 10px 24px;
+	min-width: 180px;
+	display: inline-block;
+
 	cursor: pointer;
-	width: 100%;
-	display: block;
+	-webkit-appearance: none;
+	-webkit-font-smoothing: antialiased;
+	border: none;
 }
 
-.button-group button:not(:last-child) {
-	border-bottom: none; /* Prevent double borders */
+.button-group button:first-child {
+	margin-right: 30px;
 }
 
 .button-group button:hover {
-	background-color: #073b4c;
+	opacity: 0.85;
 }
