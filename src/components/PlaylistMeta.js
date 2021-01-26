@@ -2,6 +2,8 @@ import React from 'react';
 import './PlaylistMeta.css';
 import coverIMG from '../assets/playlist-cover.jpg';
 
+import algoDescriptions from '../algorithms/AlgoDescriptions.js';
+
 class NotSidenav extends React.Component {
 	constructor(props) {
 		super(props);
@@ -31,8 +33,8 @@ class NotSidenav extends React.Component {
 						<a href='https://github.com/kai-wei-mo' target='_blank'>
 							kai-wei-mo
 						</a>
-						<span>302,887 likes</span>
-						<span>XX songs, Xhr XX min</span>
+						<span>3,781,951 likes</span>
+						<span>{algoDescriptions.length} songs</span>
 					</div>
 				</div>
 			</div>

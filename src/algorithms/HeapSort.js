@@ -11,7 +11,7 @@ const maxHeap = (input, i) => {
 	if (right < arrLength && input[right] > input[max]) {
 		max = right;
 	}
-	if (max != i) {
+	if (max !== i) {
 		animations.push(['v', i, max]);
 		animations.push(['s', i, max]);
 		swap(input, i, max);
@@ -42,8 +42,13 @@ const heapSort = (input = []) => {
 };
 
 export function getHeapSortAnimations(array) {
-	arrLength = array.length;
-	heapSort(array.slice());
+	let aux = array.slice();
+	arrLength = aux.length;
 
-	return animations;
+	heapSort(aux);
+
+	let ret = animations.slice();
+	animations = [];
+
+	return ret;
 }

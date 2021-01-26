@@ -17,7 +17,7 @@ function selectionSort(inputArr) {
 				indexOfMin = j;
 			}
 		}
-		if (indexOfMin != i) {
+		if (indexOfMin !== i) {
 			// Swapping the elements
 			animations.push(['v', indexOfMin, i]);
 			animations.push(['s', indexOfMin, i]);
@@ -33,5 +33,8 @@ export function getSelectionSortAnimations(array) {
 	let aux = array.slice();
 	selectionSort(aux);
 
-	return animations;
+	let ret = animations;
+	animations = [];
+
+	return ret;
 }

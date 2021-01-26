@@ -2,7 +2,8 @@ import React from 'react';
 import './Sidenav.css';
 
 import arrowIMG from '../assets/arrow.png';
-import logoIMG from '../assets/logo-placeholder.png';
+// import logoIMG from '../assets/logo-placeholder.png';
+import logoIMG from '../assets/logo3.png';
 
 class Sidenav extends React.Component {
 	constructor(props) {
@@ -16,6 +17,13 @@ class Sidenav extends React.Component {
 		return (
 			<div className='sidenav'>
 				<img className='logo-img' src={logoIMG} alt='logo' />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
 				<p className='arrow-text'>
 					click on a sorting algorithm to get started
 				</p>

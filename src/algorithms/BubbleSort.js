@@ -4,9 +4,13 @@ export function getBubbleSortAnimations(array) {
 	if (array.length <= 1) {
 		return array;
 	}
+
 	bubbleSort(array.slice());
 
-	return animations;
+	let ret = animations.slice();
+	animations = [];
+
+	return ret;
 }
 
 let bubbleSort = (arr) => {

@@ -40,7 +40,6 @@ function partition(items, left, right, animations) {
 }
 
 function quickSort(items, left, right, animations) {
-	var index;
 	if (items.length > 1) {
 		let [index, updatedAnimations] = partition(items, left, right, animations);
 		if (left < index - 1) {

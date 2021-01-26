@@ -1,7 +1,15 @@
+let green = 'rgba(82, 139, 97, 0.6)';
+let yellow = 'rgba(245, 183, 100, 0.6)';
+let red = 'rgba(185, 74, 89, 0.6)';
+let black = 'rgba(0, 0, 0, 0.6)';
+
 export const TIME_COLORS = {
-	'O(n)': 'rgba(82, 139, 97, 0.6)',
-	'O(n log(n))': 'rgba(245, 183, 100, 0.6)',
-	'O(n ^ 2)': 'rgba(185, 74, 89, 0.6)',
+	'O(1)': green,
+	'O(n)': green,
+	'O(n log(n))': yellow,
+	'O(n ^ 2)': red,
+	'O((n + 1)!)': black,
+	'O(infinity)': black,
 };
 
 // https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212

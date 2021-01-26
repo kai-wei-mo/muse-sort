@@ -3,12 +3,14 @@ import './Visualizer.css';
 
 import * as Tone from 'tone';
 
+import { shuffle } from '../algorithms/BogoSort.js';
 import { getBubbleSortAnimations } from '../algorithms/BubbleSort.js';
 import { getHeapSortAnimations } from '../algorithms/HeapSort.js';
 import { getInsertionSortAnimations } from '../algorithms/InsertionSort.js';
 import { getMergeSortAnimations } from '../algorithms/MergeSort.js';
 import { getQuickSortAnimations } from '../algorithms/QuickSort.js';
 import { getSelectionSortAnimations } from '../algorithms/SelectionSort.js';
+import { getShellSortAnimations } from '../algorithms/ShellSort.js';
 
 import musicMap from '../music/ChromaticMap.js';
 import { BAR_COLORS } from './ColorConstants';
@@ -23,6 +25,8 @@ let SPEED = 10;
 const MIN_BAR_HEIGHT = 1;
 const MAX_BAR_HEIGHT = 24; // two octaves = 25 tones
 const PIXEL_CONVERSION_FACTOR = 12.5;
+
+const SYNTH = new Tone.Synth().toDestination();
 
 class Visualizer extends React.Component {
 	constructor(props) {
@@ -70,8 +74,6 @@ class Visualizer extends React.Component {
 	}
 
 	genericSort(sortFunction) {
-		const synth = new Tone.Synth().toDestination();
-
 		const animations = sortFunction(this.state.array);
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName(this.props.alias);
@@ -86,7 +88,7 @@ class Visualizer extends React.Component {
 					barTwoStyle.backgroundColor = BAR_COLORS[1];
 
 					try {
-						synth.triggerAttackRelease(
+						SYNTH.triggerAttackRelease(
 							this.heightToTone(barTwoStyle.height),
 							'8n'
 						);
@@ -114,9 +116,20 @@ class Visualizer extends React.Component {
 		}
 	}
 
-	mergeSort() {
-		const synth = new Tone.Synth().toDestination();
+	bogoSort() {
+		for (let i = 0; i < 500; i++) {
+			setTimeout(() => {
+				let a = this.state.array;
+				this.setState({ array: shuffle(a) });
 
+				try {
+					SYNTH.triggerAttackRelease(a[0], '8n');
+				} catch (e) {}
+			}, i * SPEED);
+		}
+	}
+
+	mergeSort() {
 		const animations = getMergeSortAnimations(this.state.array);
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName(this.props.alias);
@@ -130,10 +143,12 @@ class Visualizer extends React.Component {
 					barOneStyle.backgroundColor = color;
 					barTwoStyle.backgroundColor = color;
 
-					synth.triggerAttackRelease(
-						this.heightToTone(barTwoStyle.height),
-						'8n'
-					);
+					try {
+						SYNTH.triggerAttackRelease(
+							this.heightToTone(barTwoStyle.height),
+							'8n'
+						);
+					} catch (e) {}
 				}, i * SPEED);
 			} else {
 				setTimeout(() => {
@@ -145,46 +160,32 @@ class Visualizer extends React.Component {
 		}
 	}
 
-	bubbleSort() {
-		this.genericSort(getBubbleSortAnimations);
-	}
-
-	heapSort() {
-		this.genericSort(getHeapSortAnimations);
-	}
-
-	insertionSort() {
-		this.genericSort(getInsertionSortAnimations);
-	}
-
-	quickSort() {
-		this.genericSort(getQuickSortAnimations);
-	}
-
-	selectionSort() {
-		this.genericSort(getSelectionSortAnimations);
-	}
-
 	render() {
 		const { array } = this.state;
 		const aliasToFunction = {
+			bogo: () => {
+				this.bogoSort();
+			},
 			bubble: () => {
-				this.bubbleSort();
+				this.genericSort(getBubbleSortAnimations);
 			},
 			heap: () => {
-				this.heapSort();
+				this.genericSort(getHeapSortAnimations);
 			},
 			insertion: () => {
-				this.insertionSort();
+				this.genericSort(getInsertionSortAnimations);
 			},
 			merge: () => {
 				this.mergeSort();
 			},
 			quick: () => {
-				this.quickSort();
+				this.genericSort(getQuickSortAnimations);
 			},
 			selection: () => {
-				this.selectionSort();
+				this.genericSort(getSelectionSortAnimations);
+			},
+			shell: () => {
+				this.genericSort(getShellSortAnimations);
 			},
 		};
 

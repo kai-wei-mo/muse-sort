@@ -20,5 +20,8 @@ function insertionSort(inputArr) {
 export function getInsertionSortAnimations(array) {
 	insertionSort(array.slice());
 
-	return animations;
+	let ret = animations.slice();
+	animations = [];
+
+	return ret;
 }
