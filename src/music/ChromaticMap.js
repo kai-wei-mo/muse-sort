@@ -1,5 +1,5 @@
 // chromatic scale from C4 to C6, inclusive
-export default {
+let chromaticMap = {
 	1: 'C4',
 	2: 'C#4',
 	3: 'D4',
@@ -28,3 +28,5 @@ export default {
 
 	25: 'C6',
 };
+
+export default chromaticMap;

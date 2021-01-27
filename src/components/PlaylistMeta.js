@@ -2,7 +2,7 @@ import React from 'react';
 import './PlaylistMeta.css';
 import coverIMG from '../assets/playlist-cover.jpg';
 
-import algoDescriptions from '../algorithms/AlgoDescriptions.js';
+import descriptions from '../algorithms/descriptions/AlgoDescriptions.js';
 
 class NotSidenav extends React.Component {
 	constructor(props) {
@@ -30,11 +30,15 @@ class NotSidenav extends React.Component {
 					</p>
 
 					<div className='stats'>
-						<a href='https://github.com/kai-wei-mo' target='_blank'>
+						<a
+							href='https://github.com/kai-wei-mo'
+							target='_blank'
+							rel='noreferrer'
+						>
 							kai-wei-mo
 						</a>
 						<span>3,781,951 likes</span>
-						<span>{algoDescriptions.length} songs</span>
+						<span>{descriptions.byTitle.length} songs</span>
 					</div>
 				</div>
 			</div>
