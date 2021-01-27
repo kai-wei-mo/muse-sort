@@ -18,8 +18,7 @@ import { BAR_COLORS } from './ColorConstants';
 const NUM_OF_BARS = 180;
 const WIDTH = 1;
 let SPEED = 10;
-// total width of container is
-// (WIDTH + 1) * NUMOFBARS - 1
+// total width of container is (WIDTH + 1) * NUMOFBARS - 1
 // width should be odd for impeccable rendering
 
 const MIN_BAR_HEIGHT = 1;
@@ -27,6 +26,7 @@ const MAX_BAR_HEIGHT = 24; // two octaves = 25 tones
 const PIXEL_CONVERSION_FACTOR = 12.5;
 
 const SYNTH = new Tone.Synth().toDestination();
+SYNTH.volume.value = -50;
 
 class Visualizer extends React.Component {
 	constructor(props) {
@@ -197,6 +197,7 @@ class Visualizer extends React.Component {
 							className={`visualizer-bar ${this.props.alias}`}
 							key={i}
 							style={{
+								key: `${WIDTH}`, // supression
 								backgroundColor: BAR_COLORS[0],
 								height: `${val}px`,
 								position: 'absolute',
@@ -211,7 +212,7 @@ class Visualizer extends React.Component {
 				<div className='right'>
 					<div className='code'>
 						{this.props.code.map((val, i) => (
-							<pre>{val}</pre>
+							<pre key={i}>{val}</pre>
 						))}
 					</div>
 

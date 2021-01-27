@@ -1,7 +1,7 @@
 let green = 'rgba(82, 139, 97, 0.6)';
 let yellow = 'rgba(245, 183, 100, 0.6)';
 let red = 'rgba(185, 74, 89, 0.6)';
-let black = 'rgba(0, 0, 0, 0.6)';
+let black = 'rgba(10, 10, 10, 0.6)';
 
 export const TIME_COLORS = {
 	'O(1)': green,
