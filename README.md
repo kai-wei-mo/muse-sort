@@ -1,15 +1,14 @@
 # muse-sort
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MuseSort is a sorting algorithm visualizer and auralizer; not only can you see your favourite sorting algorithms in action, you can hear them too!
+
+To enter the world of sorting algorithms, visit:
+[https://kai-wei-mo.github.io/muse-sort/](https://kai-wei-mo.github.io/muse-sort/).
+
+![MuseSort main page](https://github.com/kai-wei-mo/muse-sort/blob/main/src/assets/demo.PNG)
 
 ## Available Scripts
 
-In the project directory, you can run:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+In the project directory, you can run `npm start` to run the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
