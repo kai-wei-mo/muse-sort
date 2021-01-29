@@ -38,7 +38,6 @@ const heapSort = (input = []) => {
 		arrLength--;
 		maxHeap(input, 0);
 	}
-	return input;
 };
 
 export function getHeapSortAnimations(array) {

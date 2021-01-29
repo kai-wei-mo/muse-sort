@@ -32,7 +32,7 @@ class Playlist extends React.Component {
 		}
 
 		this.setState({
-			algoDescriptions: newDescriptions.reverse(),
+			algoDescriptions: currentDescriptions.slice().reverse(),
 		});
 	}
 

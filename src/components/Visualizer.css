@@ -1,6 +1,6 @@
 .visualizer {
 	position: relative;
-	width: 360px;
+	width: 350px;
 	height: 300px; /* max possible bar height is 300*/
 	display: inline-block;
 	margin-top: 20px;
@@ -21,10 +21,11 @@
 	width: 390px;
 	max-width: 390px;
 	display: inline-block;
-
 	background: rgba(156, 160, 202, 0.3);
-
 	border-radius: 3px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .code pre {

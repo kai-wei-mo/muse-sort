@@ -44,7 +44,7 @@
 
 .accordion__icon {
 	margin-left: auto;
-	transition: transform 0.6s ease;
+	transition: transform 0.5s ease;
 }
 
 .rotate {
@@ -54,7 +54,7 @@
 .accordion__content {
 	background-color: rgba(255, 255, 255, 0.1);
 	overflow: auto;
-	transition: max-height 0.6s ease;
+	transition: max-height 0.5s ease;
 
 	box-sizing: content-box;
 	overflow: hidden;

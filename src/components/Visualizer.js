@@ -3,7 +3,6 @@ import './Visualizer.css';
 
 import * as Tone from 'tone';
 
-import { shuffle } from '../algorithms/BogoSort.js';
 import { getBubbleSortAnimations } from '../algorithms/BubbleSort.js';
 import { getHeapSortAnimations } from '../algorithms/HeapSort.js';
 import { getInsertionSortAnimations } from '../algorithms/InsertionSort.js';
@@ -15,15 +14,10 @@ import { getShellSortAnimations } from '../algorithms/ShellSort.js';
 import musicMap from '../music/ChromaticMap.js';
 import { BAR_COLORS } from './ColorConstants';
 
-const NUM_OF_BARS = 180;
-const WIDTH = 1;
-let SPEED = 10;
-// total width of container is (WIDTH + 1) * NUMOFBARS - 1
-// width should be odd for impeccable rendering
-
-const MIN_BAR_HEIGHT = 1;
-const MAX_BAR_HEIGHT = 24; // two octaves = 25 tones
-const PIXEL_CONVERSION_FACTOR = 12.5;
+const NUM_OF_NOTES = 25; // 25 pitches in two inclusive octaves
+const NUM_OF_BARS = 175; // container min. width is (WIDTH + 1) * NUMOFBARS - 1
+const WIDTH = 1; // width should be odd for impeccable rendering
+const PIXEL_CONVERSION_FACTOR = 12;
 
 const SYNTH = new Tone.Synth().toDestination();
 SYNTH.volume.value = -50;
@@ -33,36 +27,44 @@ class Visualizer extends React.Component {
 		super(props);
 		this.state = {
 			array: [],
+			speed: 4,
+			clickable: true,
 		};
 
-		this.getRandomInt = this.getRandomInt.bind(this);
+		this.setSpeed = this.setSpeed.bind(this);
 	}
 
 	componentDidMount() {
 		this.resetArray();
 	}
 
-	getRandomInt(min, max) {
-		// inclusive
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min + 1)) + min;
+	setSpeed(s) {
+		this.setState({ speed: s });
 	}
 
 	resetArray() {
 		const array = [];
-		let randIndex = this.getRandomInt(0, NUM_OF_BARS - 1);
 
 		for (let i = 0; i < NUM_OF_BARS; i++) {
-			if (i === randIndex) {
-				array.push(PIXEL_CONVERSION_FACTOR * MAX_BAR_HEIGHT);
-			} else {
-				array.push(
-					PIXEL_CONVERSION_FACTOR *
-						this.getRandomInt(MIN_BAR_HEIGHT, MAX_BAR_HEIGHT)
-				);
-			}
+			array[i] =
+				PIXEL_CONVERSION_FACTOR *
+				(Math.floor(i / (NUM_OF_BARS / NUM_OF_NOTES)) + 1);
 		}
+
+		// unbiased shuffle algorithm is the Fisher-Yates (aka Knuth) Shuffle
+		let currentIndex = array.length,
+			temporaryValue,
+			randomIndex;
+
+		while (0 !== currentIndex) {
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			temporaryValue = array[currentIndex];
+			array[currentIndex] = array[randomIndex];
+			array[randomIndex] = temporaryValue;
+		}
+
 		this.setState({ array });
 	}
 
@@ -74,7 +76,14 @@ class Visualizer extends React.Component {
 	}
 
 	genericSort(sortFunction) {
+		// for any sorting algorithm that is based on the swapping of two elements
 		const animations = sortFunction(this.state.array);
+
+		this.setState({ clickable: false });
+		setTimeout(() => {
+			this.setState({ clickable: true });
+		}, (animations.length + 1) * this.state.speed);
+
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName(this.props.alias);
 			const [operation, index1, index2] = animations[i];
@@ -93,17 +102,12 @@ class Visualizer extends React.Component {
 							'8n'
 						);
 					} catch (e) {}
-				}, i * SPEED);
+				}, i * this.state.speed);
 
 				setTimeout(() => {
 					barOneStyle.backgroundColor = BAR_COLORS[0];
 					barTwoStyle.backgroundColor = BAR_COLORS[0];
-				}, (i + 1) * SPEED);
-			} else if (operation === 'p') {
-				setTimeout(() => {
-					barOneStyle.backgroundColor = BAR_COLORS[2];
-					barTwoStyle.backgroundColor = BAR_COLORS[2];
-				}, i * SPEED);
+				}, (i + 1) * this.state.speed);
 			} else {
 				setTimeout(() => {
 					let { array } = this.state;
@@ -111,21 +115,21 @@ class Visualizer extends React.Component {
 					array[index1] = array[index2];
 					array[index2] = temp;
 					this.setState({ array });
-				}, i * SPEED);
+				}, i * this.state.speed);
 			}
 		}
 	}
 
 	bogoSort() {
+		// shuffles array 500 times even if it is sorted
 		for (let i = 0; i < 500; i++) {
 			setTimeout(() => {
-				let a = this.state.array;
-				this.setState({ array: shuffle(a) });
+				this.resetArray();
 
 				try {
-					SYNTH.triggerAttackRelease(a[0], '8n');
+					SYNTH.triggerAttackRelease(this.state.array[0], '8n');
 				} catch (e) {}
-			}, i * SPEED);
+			}, (i + 1) * (this.state.speed + 10));
 		}
 	}
 
@@ -149,20 +153,20 @@ class Visualizer extends React.Component {
 							'8n'
 						);
 					} catch (e) {}
-				}, i * SPEED);
+				}, i * this.state.speed);
 			} else {
 				setTimeout(() => {
 					const [barOneIdx, newHeight] = animations[i];
 					const barOneStyle = arrayBars[barOneIdx].style;
 					barOneStyle.height = `${newHeight}px`;
-				}, i * SPEED);
+				}, i * this.state.speed);
 			}
 		}
 	}
 
 	render() {
 		const { array } = this.state;
-		const aliasToFunction = {
+		const aliasFunc = {
 			bogo: () => {
 				this.bogoSort();
 			},
@@ -217,8 +221,21 @@ class Visualizer extends React.Component {
 					</div>
 
 					<div className='button-group'>
-						<button onClick={() => this.resetArray()}>NEW ARRAY</button>
-						<button onClick={() => aliasToFunction[this.props.alias]()}>
+						<button
+							onClick={() => (this.state.clickable ? this.resetArray() : -1)}
+						>
+							NEW ARRAY
+						</button>
+						{/*<button
+							onClick={() => (this.state.clickable ? this.setSpeed(70) : -1)}
+						>
+							SPEED
+						</button>*/}
+						<button
+							onClick={() =>
+								this.state.clickable ? aliasFunc[this.props.alias]() : -1
+							}
+						>
 							SORT
 						</button>
 					</div>

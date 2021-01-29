@@ -12,5 +12,8 @@ export const TIME_COLORS = {
 	'O(infinity)': black,
 };
 
-// https://coolors.co/7b82b4-efc7c2-ffe5d4-bfd3c1-68a691-2a2a2a-121212
-export const BAR_COLORS = ['#a2d2ff', '#ff00a5', '#7B82B4'];
+export const BAR_COLORS = [
+	'rgb(162, 210, 255)',
+	'rgb(255, 0, 165)',
+	'rgb(8, 125, 1)', // currently unused
+];

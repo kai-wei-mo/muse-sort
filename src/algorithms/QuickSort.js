@@ -51,5 +51,4 @@ function quickSort(items, left, right, animations) {
 			quickSort(items, index, right, updatedAnimations);
 		}
 	}
-	return items;
 }

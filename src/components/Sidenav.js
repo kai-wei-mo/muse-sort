@@ -2,7 +2,6 @@ import React from 'react';
 import './Sidenav.css';
 
 import arrowIMG from '../assets/arrow.png';
-// import logoIMG from '../assets/logo-placeholder.png';
 import logoIMG from '../assets/logo3.png';
 
 class Sidenav extends React.Component {
